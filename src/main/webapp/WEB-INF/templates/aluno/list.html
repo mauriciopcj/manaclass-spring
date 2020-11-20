@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--/*/ <head th:insert="~{fragments/fragments :: head('Lista de Alunos')}"></head> /*/-->
+
+<body>
+	<!-- /*/ <span th:if="${session.usuarioLogado}"/> /*/ -->
+
+	<!--/*/ <div th:replace="~{fragments/fragments :: menu}"></div> /*/-->
+	
+	<!--/*/ <div th:replace="~{fragments/fragments :: header('Lista de Alunos')}"></div> /*/-->
+	
+	<div class="container">
+	
+		<div th:if="${not #strings.isEmpty(mensagem)}" th:utext="${mensagem} +'<button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;><span aria-hidden=&quot;true&quot;>&times;</span></button>'" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
+		
+		<table class="table table-striped table-sm">
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Data Nascimento</th>
+					<th>Nota 1</th>
+					<th>Nota 2</th>
+					<th>Nota 3</th>
+					<th>Final</th>
+					<th>Situação</th>
+					<th>Operações</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="aluno : ${alunos}">
+					<td th:text="${aluno.nome}"></td>
+					
+					<td th:text="${#dates.format(aluno.dataNascimento, 'dd/MM/yyyy')}"></td>
+					
+					<td th:text="${aluno.nota1}"></td>
+					
+					<td th:text="${aluno.nota2}"></td>
+					
+					<td th:text="${aluno.nota3}"></td>
+					
+					<td th:text="${aluno.notaFinal}"></td>
+					
+					<td th:text="${aluno.situacao}"></td>
+					
+					<td>
+						<a class="btn btn-outline-dark btn-sm" th:href="@{/aluno/{id}/delete(id=${aluno.id})}">
+							<i class="fas fa-trash"></i>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<!--/*/ <th:block th:replace="~{fragments/footerinc :: footer}"/> /*/-->
+	
+</body>
+</html>
