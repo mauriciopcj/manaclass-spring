@@ -75,4 +75,106 @@ public class AlunoController {
 		attr.addFlashAttribute("mensagem", "Aluno excluído!");
 		return modelAndView;
 	}
+
+	@RequestMapping("/{id}/notas")
+	public ModelAndView notas(@PathVariable("id") Integer id, ModelAndView modelAndView, HttpSession session) {
+		if (session.getAttribute("usuarioLogado") != null) {
+			Aluno aluno = alunoService.findById(id).get();
+			modelAndView.setViewName("aluno/notas");
+			modelAndView.addObject("aluno", aluno);
+		} else {
+			modelAndView.setViewName("redirect:/login");
+		}
+		return modelAndView;
+	}
+
+	@RequestMapping("/{id}/atualizar-notas-aluno")
+	public ModelAndView cadastrarNotas(@PathVariable("id") Integer id,
+									   ModelAndView modelAndView, HttpSession session, Aluno alunoNotas, RedirectAttributes flash) {
+		if (session.getAttribute("usuarioLogado") != null) {
+			modelAndView.setViewName("redirect:/aluno");
+			try {
+				Aluno aluno = alunoService.findById(id).get();
+				aluno.setNota1(alunoNotas.getNota1());
+				aluno.setNota2(alunoNotas.getNota2());
+				aluno.setNota3(alunoNotas.getNota3());
+				alunoService.saveAluno(aluno);
+				flash.addFlashAttribute("mensagem", "Cadastro do aluno atualizado com sucesso!");
+			} catch (Exception e) {
+				flash.addFlashAttribute("mensagem", "Ocorreu um erro atualizando o aluno!");
+			}
+			flash.addFlashAttribute("aluno", new Aluno());
+		} else {
+			modelAndView.setViewName("redirect:/login");
+		}
+		return modelAndView;
+	}
+
+	@RequestMapping("/{id}/faltas")
+	public ModelAndView faltas(@PathVariable("id") Integer id, ModelAndView modelAndView, HttpSession session) {
+		if (session.getAttribute("usuarioLogado") != null) {
+			Aluno aluno = alunoService.findById(id).get();
+			modelAndView.setViewName("aluno/faltas");
+			modelAndView.addObject("aluno", aluno);
+		} else {
+			modelAndView.setViewName("redirect:/login");
+		}
+		return modelAndView;
+	}
+
+	@RequestMapping("/{id}/atualizar-faltas-aluno")
+	public ModelAndView cadastrarFaltas(@PathVariable("id") Integer id,
+									   ModelAndView modelAndView, HttpSession session, Aluno alunoFaltas, RedirectAttributes flash) {
+		if (session.getAttribute("usuarioLogado") != null) {
+			modelAndView.setViewName("redirect:/aluno");
+			try {
+				Aluno aluno = alunoService.findById(id).get();
+				aluno.setFaltas(alunoFaltas.getFaltas());
+				alunoService.saveAluno(aluno);
+				flash.addFlashAttribute("mensagem", "Cadastro do aluno atualizado com sucesso!");
+			} catch (Exception e) {
+				flash.addFlashAttribute("mensagem", "Ocorreu um erro atualizando o aluno!");
+			}
+			flash.addFlashAttribute("aluno", new Aluno());
+		} else {
+			modelAndView.setViewName("redirect:/login");
+		}
+		return modelAndView;
+	}
+
+	@RequestMapping("/{id}/final")
+	public ModelAndView notaFinal(@PathVariable("id") Integer id, ModelAndView modelAndView, HttpSession session) {
+		if (session.getAttribute("usuarioLogado") != null) {
+			Aluno aluno = alunoService.findById(id).get();
+			modelAndView.setViewName("aluno/final");
+			modelAndView.addObject("aluno", aluno);
+		} else {
+			modelAndView.setViewName("redirect:/login");
+		}
+		return modelAndView;
+	}
+
+	@RequestMapping("/{id}/atualizar-final-aluno")
+	public ModelAndView cadastrarNotaFinal(@PathVariable("id") Integer id,
+										ModelAndView modelAndView, HttpSession session, Aluno alunoNotaFinal, RedirectAttributes flash) {
+		if (session.getAttribute("usuarioLogado") != null) {
+			modelAndView.setViewName("redirect:/aluno");
+			try {
+				Aluno aluno = alunoService.findById(id).get();
+				aluno.setNotaFinal(alunoNotaFinal.getNotaFinal());
+				alunoService.saveAluno(aluno);
+				flash.addFlashAttribute("mensagem", "Cadastro do aluno atualizado com sucesso!");
+			} catch (Exception e) {
+				flash.addFlashAttribute("mensagem", "Ocorreu um erro atualizando o aluno!");
+			}
+			flash.addFlashAttribute("aluno", new Aluno());
+		} else {
+			modelAndView.setViewName("redirect:/login");
+		}
+		return modelAndView;
+	}
+
+
+
+
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <!--/*/ <head th:insert="~{fragments/fragments :: head('Home')}"></head> /*/-->
@@ -7,17 +7,22 @@
 	<!-- /*/ <span th:if="${session.usuarioLogado}"/> /*/ -->
 
 	<!--/*/ <div th:replace="~{fragments/fragments :: menu}"></div> /*/-->
-	
+
 	<!--/*/ <div th:replace="~{fragments/fragments :: header('Página Home')}"></div> /*/-->
-	
+
 	<div class="container">
 		<p class="alert alert-primary" th:text="${mensagem}" th:if="${mensagem != null}"></p>
-		
+
+
+
+
 		<p> Usuário logado: <span th:text="${session.usuarioLogado.email}"></span>
 	</div>
-	
-	
+
+
 	<!--/*/ <th:block th:replace="~{fragments/footerinc :: footer}"/> /*/-->
-	
+
+	<!--/*/ <th:block th:replace="~{fragments/fragments :: scripts}"/> /*/-->
+
 </body>
 </html>

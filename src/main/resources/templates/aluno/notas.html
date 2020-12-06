@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--/*/ <head th:insert="~{fragments/fragments :: head('Cadastro de Usuário')}"></head> /*/-->
+
+<body>
+	<!-- /*/ <span th:if="${session.usuarioLogado}"/> /*/ -->
+
+	<!--/*/ <div th:replace="~{fragments/fragments :: menu}"></div> /*/-->
+	
+	<!--/*/ <div th:replace="~{fragments/fragments :: header('Cadastro das notas do aluno')}"></div> /*/-->
+
+	<div class="container">
+		<p class="alert alert-primary" th:text="${mensagem}" th:if="${mensagem != null}"></p>
+
+		<form class="form" th:action="@{/aluno/{id}/atualizar-notas-aluno(id=${aluno.id})}" method="POST" th:object="${aluno}">
+			<div class="form-group">
+				<label for="nota1">Primeira Nota</label>
+				<input type="text" class="form-control" th:field="*{nota1}">
+			</div>
+			<div class="form-group">
+				<label for="nota2">Segunda Nota</label>
+				<input type="text" class="form-control" th:field="*{nota2}">
+			</div>
+			<div class="form-group">
+				<label for="nota3">Terceira Nota</label>
+				<input type="text" class="form-control" th:field="*{nota3}">
+			</div>
+
+			<input type="submit" class="btn btn-dark" value="Cadastrar"/>
+		</form>
+	</div>
+	
+	<!--/*/ <th:block th:replace="~{fragments/footerinc :: footer}"/> /*/-->
+	
+</body>
+</html>

@@ -9,7 +9,7 @@
 	<!--/*/ <div th:replace="~{fragments/fragments :: menu}"></div> /*/-->
 	
 	<!--/*/ <div th:replace="~{fragments/fragments :: header('Lista de Alunos')}"></div> /*/-->
-	
+
 	<div class="container">
 	
 		<div th:if="${not #strings.isEmpty(mensagem)}" th:utext="${mensagem} +'<button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;><span aria-hidden=&quot;true&quot;>&times;</span></button>'" class="alert alert-danger alert-dismissible fade show" role="alert"></div>
@@ -23,6 +23,7 @@
 					<th>Nota 2</th>
 					<th>Nota 3</th>
 					<th>Final</th>
+					<th>Faltas</th>
 					<th>Situação</th>
 					<th>Operações</th>
 				</tr>
@@ -40,12 +41,26 @@
 					<td th:text="${aluno.nota3}"></td>
 					
 					<td th:text="${aluno.notaFinal}"></td>
-					
+
+					<td th:text="${aluno.faltas}"></td>
+
 					<td th:text="${aluno.situacao}"></td>
 					
 					<td>
 						<a class="btn btn-outline-dark btn-sm" th:href="@{/aluno/{id}/delete(id=${aluno.id})}">
 							<i class="fas fa-trash"></i>
+						</a>
+						<a class="btn btn-outline-dark btn-sm" th:href="@{/aluno/{id}/update(id=${aluno.id})}">
+							<i class="fas fa-pencil-alt"></i>
+						</a>
+						<a class="btn btn-outline-dark btn-sm" th:href="@{/aluno/{id}/notas(id=${aluno.id})}">
+							<div>notas</div>
+						</a>
+						<a class="btn btn-outline-dark btn-sm" th:href="@{/aluno/{id}/faltas(id=${aluno.id})}">
+							<div>faltas</div>
+						</a>
+						<a class="btn btn-outline-dark btn-sm"  th:classappend="${aluno.canGoToFinal()} ? btn : disabled "  th:href="@{/aluno/{id}/final(id=${aluno.id})}">
+							<div>final</div>
 						</a>
 					</td>
 				</tr>

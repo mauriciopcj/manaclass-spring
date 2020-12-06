@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.edu.jfpb.pweb2.manaclassspringboot.util.enums.SituacaoEnum;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -28,6 +29,8 @@ public class Aluno {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_nascimento")
 	private Date dataNascimento;
+
+	private Integer faltas;
 	
 	@Column(name = "nota_1")
 	private BigDecimal nota1;
@@ -41,8 +44,25 @@ public class Aluno {
 	@Column(name = "nota_final")
 	private BigDecimal notaFinal;
 	
-	private String situacao;
-	
+	private SituacaoEnum situacao;
+
+	// HELPERS
+
+	public Boolean canGoToFinal() {
+		return getMedia() >= 4.0 && getMedia() < 7.0 && getFaltas() <= 25;
+	}
+
+	public Double getMedia() {
+		Double n1 = 0.0;
+		Double n2 = 0.0;
+		Double n3 = 0.0;
+		if (this.nota1 != null) n1 = nota1.doubleValue();
+		if (this.nota2 != null) n2 = nota2.doubleValue();
+		if (this.nota3 != null) n3 = nota3.doubleValue();
+
+		return (n1 + n2 + n3)/3.0;
+	}
+
 	// CONSTRUTOR
 	
 	public Aluno() { }
@@ -64,6 +84,16 @@ public class Aluno {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
+	public Integer getFaltas() {
+		if (this.faltas != null) {
+			return faltas;
+		} else {
+			return 0;
+		}
+	}
+
+	public void setFaltas(Integer faltas) { this.faltas = faltas; }
 
 	public Date getDataNascimento() {
 		return dataNascimento;
@@ -105,12 +135,26 @@ public class Aluno {
 		this.notaFinal = notaFinal;
 	}
 
-	public String getSituacao() {
+	public SituacaoEnum getSituacao() {
 		return situacao;
 	}
 
-	public void setSituacao(String situacao) {
+	public void setSituacao(SituacaoEnum situacao) {
 		this.situacao = situacao;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Aluno{" +
+				"id=" + id +
+				", nome='" + nome + '\'' +
+				", dataNascimento=" + dataNascimento +
+				", faltas=" + faltas +
+				", nota1=" + nota1 +
+				", nota2=" + nota2 +
+				", nota3=" + nota3 +
+				", notaFinal=" + notaFinal +
+				", situacao=" + situacao +
+				'}';
+	}
 }
