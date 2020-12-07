@@ -38,13 +38,6 @@ public class UsuarioController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView cadastrar(Usuario usuario, ModelAndView modelAndView, HttpSession session, RedirectAttributes flash) {
-		Usuario u = usuarioService.findByLogin(usuario.getEmail());
-		if(u != null) {
-			flash.addFlashAttribute("mensagem", "Email já cadastrado");
-			modelAndView.setViewName("redirect:usuarios/cadastro");
-			return modelAndView;
-		}
-		
 		modelAndView.setViewName("redirect:/login");
 		
 		String senha = PasswordUtil.hashPassword(usuario.getSenha());
