@@ -30,7 +30,7 @@ public class Aluno {
 	@Column(name = "data_nascimento")
 	private Date dataNascimento;
 
-	private Integer faltas;
+	private Integer faltas = 0;
 	
 	@Column(name = "nota_1")
 	private BigDecimal nota1;
@@ -44,9 +44,41 @@ public class Aluno {
 	@Column(name = "nota_final")
 	private BigDecimal notaFinal;
 	
-	private SituacaoEnum situacao;
+	private SituacaoEnum situacao = SituacaoEnum.MATRICULADO;
 
 	// HELPERS
+	
+	public SituacaoEnum calculateSituacao() {
+		if(this.getNota1() != null && this.getNota2() != null && this.getNota3() != null) {
+			
+			if(getMedia() >= 7.0 && this.faltas < 25) {
+				return SituacaoEnum.APROVADO;
+				
+			} else if(getMedia() >= 4.0 && this.faltas < 25) {
+				return SituacaoEnum.FINAL;
+				
+			} else if(this.faltas >= 25) {
+				return SituacaoEnum.REPROVADO_FALTA;
+				
+			} else {
+				return SituacaoEnum.REPROVADO_FINAL;
+			}
+		}
+		
+		return null;
+	}
+	
+	public SituacaoEnum calculateSituacaoFinal() {
+		if(this.getNota1() != null && this.getNota2() != null && this.getNota3() != null && this.notaFinal != null) {
+			if(((getMedia() * 6.0) + (this.notaFinal.doubleValue() * 4.0)) / 10.0 >= 5.0) {
+				return SituacaoEnum.APROVADO;
+			} else {
+				return SituacaoEnum.REPROVADO_FINAL;
+			}
+		}
+		
+		return null;
+	}
 
 	public Boolean canGoToFinal() {
 		return getMedia() >= 4.0 && getMedia() < 7.0 && getFaltas() <= 25;
@@ -86,11 +118,7 @@ public class Aluno {
 	}
 
 	public Integer getFaltas() {
-		if (this.faltas != null) {
-			return faltas;
-		} else {
-			return 0;
-		}
+		return faltas;
 	}
 
 	public void setFaltas(Integer faltas) { this.faltas = faltas; }

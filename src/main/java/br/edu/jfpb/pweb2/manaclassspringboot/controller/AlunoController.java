@@ -98,6 +98,12 @@ public class AlunoController {
 				aluno.setNota1(alunoNotas.getNota1());
 				aluno.setNota2(alunoNotas.getNota2());
 				aluno.setNota3(alunoNotas.getNota3());
+				
+				// Calcular situação do aluno
+				if(aluno.calculateSituacao() != null) {
+					aluno.setSituacao(aluno.calculateSituacao());
+				}
+				
 				alunoService.saveAluno(aluno);
 				flash.addFlashAttribute("mensagem", "Cadastro do aluno atualizado com sucesso!");
 			} catch (Exception e) {
@@ -130,6 +136,12 @@ public class AlunoController {
 			try {
 				Aluno aluno = alunoService.findById(id).get();
 				aluno.setFaltas(alunoFaltas.getFaltas());
+				
+				// Calcular situação do aluno
+				if(aluno.calculateSituacao() != null) {
+					aluno.setSituacao(aluno.calculateSituacao());
+				}
+				
 				alunoService.saveAluno(aluno);
 				flash.addFlashAttribute("mensagem", "Cadastro do aluno atualizado com sucesso!");
 			} catch (Exception e) {
@@ -162,6 +174,12 @@ public class AlunoController {
 			try {
 				Aluno aluno = alunoService.findById(id).get();
 				aluno.setNotaFinal(alunoNotaFinal.getNotaFinal());
+				
+				// Calcular situação final do aluno
+				if(aluno.calculateSituacaoFinal() != null) {
+					aluno.setSituacao(aluno.calculateSituacaoFinal());					
+				}
+				
 				alunoService.saveAluno(aluno);
 				flash.addFlashAttribute("mensagem", "Cadastro do aluno atualizado com sucesso!");
 			} catch (Exception e) {
@@ -174,7 +192,21 @@ public class AlunoController {
 		return modelAndView;
 	}
 
-
+	@RequestMapping("relatorio")
+	public ModelAndView getRelatorio(ModelAndView modelAndView, HttpSession session) {
+		if (session.getAttribute("usuarioLogado") != null) {
+			modelAndView.setViewName("aluno/relatorio");
+			try {
+				List<Aluno> alunos = alunoService.findAll();
+				modelAndView.addObject("alunos", alunos);
+			} catch (CadernetaException e) {
+				e.printStackTrace();
+			}
+		} else {
+			modelAndView.setViewName("redirect:/login");
+		}
+		return modelAndView;
+	}
 
 
 }
