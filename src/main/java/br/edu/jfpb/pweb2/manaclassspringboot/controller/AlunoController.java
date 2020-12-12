@@ -38,10 +38,16 @@ public class AlunoController {
 	@RequestMapping("/cadastrar")
 	public ModelAndView cadastrar(ModelAndView modelAndView, HttpSession session, Aluno aluno, RedirectAttributes flash) {
 		if (session.getAttribute("usuarioLogado") != null) {
-			modelAndView.setViewName("redirect:/aluno/cadastro");
 			try {
-				alunoService.saveAluno(aluno);
-				flash.addFlashAttribute("mensagem", "Aluno cadastrado com sucesso!");				
+				if (aluno.getId() != null) {
+					modelAndView.setViewName("redirect:/aluno");
+					flash.addFlashAttribute("mensagem", "Aluno atualizado com sucesso!");
+				} else {
+					modelAndView.setViewName("redirect:/aluno/cadastro");
+					flash.addFlashAttribute("mensagem", "Aluno cadastrado com sucesso!");
+				}
+				
+				alunoService.saveAluno(aluno);				
 			} catch (Exception e) {
 				flash.addFlashAttribute("mensagem", "Ocorreu um erro ao cadastrar o usuário!");				
 			}
@@ -202,6 +208,18 @@ public class AlunoController {
 			} catch (CadernetaException e) {
 				e.printStackTrace();
 			}
+		} else {
+			modelAndView.setViewName("redirect:/login");
+		}
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/{id}/update")
+	public ModelAndView updateUser(@PathVariable("id") Integer id, ModelAndView modelAndView, HttpSession session) {
+		if (session.getAttribute("usuarioLogado") != null) {
+			Aluno aluno = alunoService.findById(id).get();
+			modelAndView.setViewName("aluno/cadastro");
+			modelAndView.addObject("aluno", aluno);
 		} else {
 			modelAndView.setViewName("redirect:/login");
 		}
