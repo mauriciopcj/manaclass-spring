@@ -16,15 +16,15 @@
 		<form class="form" th:action="@{/aluno/{id}/atualizar-notas-aluno(id=${aluno.id})}" method="POST" th:object="${aluno}">
 			<div class="form-group">
 				<label for="nota1">Primeira Nota</label>
-				<input type="text" class="form-control" th:field="*{nota1}">
+				<input type="number" min="0" max="100" class="form-control" th:field="*{nota1}">
 			</div>
 			<div class="form-group">
 				<label for="nota2">Segunda Nota</label>
-				<input type="text" class="form-control" th:field="*{nota2}">
+				<input type="number" min="0" max="100" class="form-control" th:field="*{nota2}">
 			</div>
 			<div class="form-group">
 				<label for="nota3">Terceira Nota</label>
-				<input type="text" class="form-control" th:field="*{nota3}">
+				<input type="number" min="0" max="100" class="form-control" th:field="*{nota3}">
 			</div>
 
 			<input type="submit" class="btn btn-dark" value="Cadastrar"/>

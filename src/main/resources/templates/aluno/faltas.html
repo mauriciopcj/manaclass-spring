@@ -16,7 +16,7 @@
 	<form class="form" th:action="@{/aluno/{id}/atualizar-faltas-aluno(id=${aluno.id})}" method="POST" th:object="${aluno}">
 		<div class="form-group">
 			<label for="faltas">faltas</label>
-			<input type="text" class="form-control" th:field="*{faltas}">
+			<input type="number" min="0" max="100" class="form-control" th:field="*{faltas}">
 		</div>
 		<input type="submit" class="btn btn-dark" value="Cadastrar"/>
 	</form>
