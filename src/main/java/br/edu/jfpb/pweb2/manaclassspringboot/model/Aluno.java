@@ -49,13 +49,24 @@ public class Aluno {
 	// HELPERS
 	
 	public SituacaoEnum calculateSituacao() {
-		if(this.getNota1() != null && this.getNota2() != null && this.getNota3() != null) {
+		if(this.getNota1() != null && this.getNota2() != null && this.getNota3() != null && this.notaFinal == null) {
 			
-			if(getMedia() >= 7.0 && this.faltas < 25) {
+			if(getMedia() >= 70 && this.faltas < 25) {
 				return SituacaoEnum.APROVADO;
 				
-			} else if(getMedia() >= 4.0 && this.faltas < 25) {
+			} else if(getMedia() >= 40 && this.faltas < 25) {
 				return SituacaoEnum.FINAL;
+				
+			} else if(this.faltas >= 25) {
+				return SituacaoEnum.REPROVADO_FALTA;
+				
+			} else {
+				return SituacaoEnum.REPROVADO_FINAL;
+			}
+		} else if(this.getNota1() != null && this.getNota2() != null && this.getNota3() != null && this.notaFinal != null) {
+			
+			if(((getMedia() * 60) + (this.notaFinal.doubleValue() * 40)) / 100 >= 50 && this.faltas < 25) {
+				return SituacaoEnum.APROVADO;
 				
 			} else if(this.faltas >= 25) {
 				return SituacaoEnum.REPROVADO_FALTA;
@@ -67,21 +78,13 @@ public class Aluno {
 		
 		return null;
 	}
-	
-	public SituacaoEnum calculateSituacaoFinal() {
-		if(this.getNota1() != null && this.getNota2() != null && this.getNota3() != null && this.notaFinal != null) {
-			if(((getMedia() * 6.0) + (this.notaFinal.doubleValue() * 4.0)) / 10.0 >= 5.0) {
-				return SituacaoEnum.APROVADO;
-			} else {
-				return SituacaoEnum.REPROVADO_FINAL;
-			}
-		}
-		
-		return null;
-	}
 
 	public Boolean canGoToFinal() {
-		return getMedia() >= 4.0 && getMedia() < 7.0 && getFaltas() <= 25;
+		if(this.getNota1() == null || this.getNota2() == null || this.getNota3() == null) {
+			return false;
+		}
+		
+		return getMedia() >= 40 && getMedia() < 70 && getFaltas() <= 25;
 	}
 
 	public Double getMedia() {

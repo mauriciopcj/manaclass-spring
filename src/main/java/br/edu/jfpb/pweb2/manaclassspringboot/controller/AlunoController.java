@@ -181,9 +181,9 @@ public class AlunoController {
 				Aluno aluno = alunoService.findById(id).get();
 				aluno.setNotaFinal(alunoNotaFinal.getNotaFinal());
 				
-				// Calcular situação final do aluno
-				if(aluno.calculateSituacaoFinal() != null) {
-					aluno.setSituacao(aluno.calculateSituacaoFinal());					
+				// Calcular situação do aluno
+				if(aluno.calculateSituacao() != null) {
+					aluno.setSituacao(aluno.calculateSituacao());				
 				}
 				
 				alunoService.saveAluno(aluno);
