@@ -64,13 +64,12 @@ public class Aluno {
 				return SituacaoEnum.REPROVADO_FINAL;
 			}
 		} else if(this.getNota1() != null && this.getNota2() != null && this.getNota3() != null && this.notaFinal != null) {
-			
 			if(((getMedia() * 60) + (this.notaFinal.doubleValue() * 40)) / 100 >= 50 && this.faltas < 25) {
 				return SituacaoEnum.APROVADO;
-				
+
 			} else if(this.faltas >= 25) {
 				return SituacaoEnum.REPROVADO_FALTA;
-				
+
 			} else {
 				return SituacaoEnum.REPROVADO_FINAL;
 			}
@@ -80,21 +79,25 @@ public class Aluno {
 	}
 
 	public Boolean canGoToFinal() {
-		if(this.getNota1() == null || this.getNota2() == null || this.getNota3() == null) {
+		if (getMedia() == null) {
 			return false;
 		}
-		
-		return getMedia() >= 40 && getMedia() < 70 && getFaltas() <= 25;
+		return getMedia() >= 40.0 && getMedia() < 70.0 && getFaltas() <= 25;
 	}
 
 	public Double getMedia() {
 		Double n1 = 0.0;
 		Double n2 = 0.0;
 		Double n3 = 0.0;
+		
+		if (this.nota1 == null || this.nota2 == null || this.nota3 == null) {
+			return null;
+		}
+		
 		if (this.nota1 != null) n1 = nota1.doubleValue();
 		if (this.nota2 != null) n2 = nota2.doubleValue();
 		if (this.nota3 != null) n3 = nota3.doubleValue();
-
+		
 		return (n1 + n2 + n3)/3.0;
 	}
 

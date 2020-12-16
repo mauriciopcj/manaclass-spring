@@ -19,12 +19,15 @@
 				<tr>
 					<th>Nome</th>
 					<th>Data Nascimento</th>
-					<th>Nota 1</th>
-					<th>Nota 2</th>
-					<th>Nota 3</th>
-					<th>Final</th>
-					<th>Faltas</th>
-					<th>Situação</th>
+					<th:block th:if="${finalizado}">
+						<th class="text-center">Nota 1</th>
+						<th class="text-center">Nota 2</th>
+						<th class="text-center">Nota 3</th>
+						<th class="text-center">Faltas</th>
+					</th:block>
+					<th class="text-center">Média</th>
+					<th class="text-center">Final</th>
+					<th class="text-center">Situação</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -33,17 +36,21 @@
 					
 					<td th:text="${#dates.format(aluno.dataNascimento, 'dd/MM/yyyy')}"></td>
 					
-					<td th:text="${aluno.nota1}"></td>
-					
-					<td th:text="${aluno.nota2}"></td>
-					
-					<td th:text="${aluno.nota3}"></td>
-					
-					<td th:text="${aluno.notaFinal}"></td>
+					<th:block th:if="${finalizado}">
+						<td class="text-center" th:text="${#numbers.formatDecimal(aluno.nota1, 1, 0)}"></td>
+						
+						<td class="text-center" th:text="${#numbers.formatDecimal(aluno.nota2, 1, 0)}"></td>
+						
+						<td class="text-center" th:text="${#numbers.formatDecimal(aluno.nota3, 1, 0)}"></td>
 
-					<td th:text="${aluno.faltas}"></td>
+						<td class="text-center" th:text="${aluno.faltas}"></td>
+					</th:block>
+					
+					<td class="text-center" th:text="${#numbers.formatDecimal(aluno.getMedia(), 1, 0)}"></td>
+					
+					<td class="text-center" th:text="${#numbers.formatDecimal(aluno.notaFinal, 1, 0)}"></td>
 
-					<td th:text="${aluno.situacao.getSigla()}"></td>
+					<td class="text-center" th:text="${aluno.situacao.getSigla()}"></td>
 				</tr>
 			</tbody>
 		</table>

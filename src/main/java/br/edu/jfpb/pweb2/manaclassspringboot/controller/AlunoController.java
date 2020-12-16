@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.edu.jfpb.pweb2.manaclassspringboot.exception.CadernetaException;
 import br.edu.jfpb.pweb2.manaclassspringboot.model.Aluno;
 import br.edu.jfpb.pweb2.manaclassspringboot.service.AlunoService;
+import br.edu.jfpb.pweb2.manaclassspringboot.util.enums.SituacaoEnum;
 
 @Controller
 @RequestMapping("/aluno")
@@ -42,14 +43,17 @@ public class AlunoController {
 				if (aluno.getId() != null) {
 					modelAndView.setViewName("redirect:/aluno");
 					flash.addFlashAttribute("mensagem", "Aluno atualizado com sucesso!");
+					flash.addFlashAttribute("typeMessage", "primary");
 				} else {
 					modelAndView.setViewName("redirect:/aluno/cadastro");
 					flash.addFlashAttribute("mensagem", "Aluno cadastrado com sucesso!");
+					flash.addFlashAttribute("typeMessage", "primary");
 				}
 				
 				alunoService.saveAluno(aluno);				
 			} catch (Exception e) {
-				flash.addFlashAttribute("mensagem", "Ocorreu um erro ao cadastrar o usuário!");				
+				flash.addFlashAttribute("mensagem", "Ocorreu um erro ao cadastrar o usuário!");	
+				flash.addFlashAttribute("typeMessage", "danger");
 			}
 			flash.addFlashAttribute("aluno", new Aluno());
 		} else {
@@ -75,10 +79,11 @@ public class AlunoController {
 	}
 	
 	@RequestMapping(value="/{id}/delete")
-	public ModelAndView deletePorId(@PathVariable("id") Integer id, ModelAndView modelAndView , RedirectAttributes attr) {
+	public ModelAndView deletePorId(@PathVariable("id") Integer id, ModelAndView modelAndView , RedirectAttributes flash) {
 		alunoService.deleteById(id);
 		modelAndView.setViewName("redirect:/aluno");
-		attr.addFlashAttribute("mensagem", "Aluno excluído!");
+		flash.addFlashAttribute("mensagem", "Aluno excluído!");
+		flash.addFlashAttribute("typeMessage", "warning");
 		return modelAndView;
 	}
 
@@ -108,12 +113,16 @@ public class AlunoController {
 				// Calcular situação do aluno
 				if(aluno.calculateSituacao() != null) {
 					aluno.setSituacao(aluno.calculateSituacao());
+				} else {
+					aluno.setSituacao(SituacaoEnum.MATRICULADO);
 				}
 				
 				alunoService.saveAluno(aluno);
-				flash.addFlashAttribute("mensagem", "Cadastro do aluno atualizado com sucesso!");
+				flash.addFlashAttribute("mensagem", "Notas atualizadas com sucesso!");
+				flash.addFlashAttribute("typeMessage", "primary");
 			} catch (Exception e) {
 				flash.addFlashAttribute("mensagem", "Ocorreu um erro atualizando o aluno!");
+				flash.addFlashAttribute("typeMessage", "danger");
 			}
 			flash.addFlashAttribute("aluno", new Aluno());
 		} else {
@@ -149,9 +158,11 @@ public class AlunoController {
 				}
 				
 				alunoService.saveAluno(aluno);
-				flash.addFlashAttribute("mensagem", "Cadastro do aluno atualizado com sucesso!");
+				flash.addFlashAttribute("mensagem", "Faltas atualizadas com sucesso!");
+				flash.addFlashAttribute("typeMessage", "primary");
 			} catch (Exception e) {
 				flash.addFlashAttribute("mensagem", "Ocorreu um erro atualizando o aluno!");
+				flash.addFlashAttribute("typeMessage", "danger");
 			}
 			flash.addFlashAttribute("aluno", new Aluno());
 		} else {
@@ -202,9 +213,17 @@ public class AlunoController {
 	public ModelAndView getRelatorio(ModelAndView modelAndView, HttpSession session) {
 		if (session.getAttribute("usuarioLogado") != null) {
 			modelAndView.setViewName("aluno/relatorio");
+			boolean finalizado = true;
 			try {
 				List<Aluno> alunos = alunoService.findAll();
+				
+				for(Aluno a: alunos) {
+					if (a.getSituacao().getSigla() == "MT" || a.getSituacao().getSigla() == "FN") {
+						finalizado = false;
+					}
+				}
 				modelAndView.addObject("alunos", alunos);
+				modelAndView.addObject("finalizado", finalizado);
 			} catch (CadernetaException e) {
 				e.printStackTrace();
 			}
@@ -220,6 +239,32 @@ public class AlunoController {
 			Aluno aluno = alunoService.findById(id).get();
 			modelAndView.setViewName("aluno/cadastro");
 			modelAndView.addObject("aluno", aluno);
+		} else {
+			modelAndView.setViewName("redirect:/login");
+		}
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/insert-auto")
+	public ModelAndView insertAuto(ModelAndView modelAndView, HttpSession session, RedirectAttributes flash) {
+		if (session.getAttribute("usuarioLogado") != null) {
+			modelAndView.setViewName("redirect:/");
+			
+			try {
+				List<Aluno> alunos = alunoService.findAll();
+				if (alunos.size() > 0) {
+					flash.addFlashAttribute("mensagem", "A tabela já possui alunos cadastrados.");
+					flash.addFlashAttribute("typeMessage", "danger");
+				} else {
+					alunoService.insertAutoSave();
+					flash.addFlashAttribute("mensagem", "Alunos cadastrados com sucesso!");
+					flash.addFlashAttribute("typeMessage", "primary");					
+				}
+			} catch (CadernetaException e) {
+				flash.addFlashAttribute("mensagem", "Ocorreu um erro ao inserir os dados.");
+				flash.addFlashAttribute("typeMessage", "danger");
+			}
+			
 		} else {
 			modelAndView.setViewName("redirect:/login");
 		}

@@ -41,6 +41,7 @@ public class UsuarioController {
 		Usuario u = usuarioService.findByLogin(usuario.getEmail());
 		if(u != null && u.getId() != usuario.getId()) {
 			flash.addFlashAttribute("mensagem", "Email já cadastrado");
+			flash.addFlashAttribute("typeMessage", "danger");
 			modelAndView.setViewName("redirect:/usuarios/cadastro");
 			return modelAndView;
 		}
@@ -61,8 +62,10 @@ public class UsuarioController {
 		try {
 			usuarioService.saveUsuario(usuario);
 			flash.addFlashAttribute("mensagem", "Usuário " + msg + "do");
+			flash.addFlashAttribute("typeMessage", "primary");
 		} catch (Exception e) {
 			flash.addFlashAttribute("mensagem", "Erro ao " + msg + "r usuário");
+			flash.addFlashAttribute("typeMessage", "danger");
 		}
 		
 		return modelAndView;

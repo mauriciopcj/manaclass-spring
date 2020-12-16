@@ -25,6 +25,13 @@
 			    <label for="dataNascimento">Data de Nascimento</label>
 			    <input type="text" class="form-control" th:field="*{dataNascimento}" placeholder="DD/MM/AAAA" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" required>
 		  	</div>
+		  	
+		  	<input type="text" th:field="*{nota1}" hidden="true">
+		  	<input type="text" th:field="*{nota2}" hidden="true">
+		  	<input type="text" th:field="*{nota3}" hidden="true">
+		  	<input type="text" th:field="*{notaFinal}" hidden="true">
+		  	<input type="text" th:field="*{faltas}" hidden="true">
+		  	<input type="text" th:field="*{situacao}" hidden="true">
 	
 			<input type="submit" class="btn btn-dark" value="Cadastrar"/>
 		</form>

@@ -4,25 +4,24 @@
 <!--/*/ <head th:insert="~{fragments/fragments :: head('Cadastro de Usuário')}"></head> /*/-->
 
 <body>
-<!-- /*/ <span th:if="${session.usuarioLogado}"/> /*/ -->
-
-<!--/*/ <div th:replace="~{fragments/fragments :: menu}"></div> /*/-->
-
-<!--/*/ <div th:replace="~{fragments/fragments :: header('Cadastro da nota final do aluno')}"></div> /*/-->
-
-<div class="container">
-	<p class="alert alert-primary" th:text="${mensagem}" th:if="${mensagem != null}"></p>
-
-	<form class="form" th:action="@{/aluno/{id}/atualizar-final-aluno(id=${aluno.id})}" method="POST" th:object="${aluno}">
-		<div class="form-group">
-			<label for="final">final</label>
-			<input type="number" min="0" max="100" class="form-control" th:field="*{notaFinal}">
-		</div>
-		<input type="submit" class="btn btn-dark" value="Cadastrar"/>
-	</form>
-</div>
-
-<!--/*/ <th:block th:replace="~{fragments/footerinc :: footer}"/> /*/-->
-
+	<!-- /*/ <span th:if="${session.usuarioLogado}"/> /*/ -->
+	
+	<!--/*/ <div th:replace="~{fragments/fragments :: menu}"></div> /*/-->
+	
+	<!--/*/ <div th:replace="~{fragments/fragments :: header('Cadastro da nota final do aluno')}"></div> /*/-->
+	
+	<div class="container">
+		<p class="alert alert-primary" th:text="${mensagem}" th:if="${mensagem != null}"></p>
+	
+		<form class="form" th:action="@{/aluno/{id}/atualizar-final-aluno(id=${aluno.id})}" method="POST" th:object="${aluno}">
+			<div class="form-group">
+				<label for="final">final</label>
+				<input type="number" min="0" max="100" class="form-control" th:field="*{notaFinal}">
+			</div>
+			<input type="submit" class="btn btn-dark" value="Cadastrar"/>
+		</form>
+	</div>
+	
+	<!--/*/ <th:block th:replace="~{fragments/footerinc :: footer}"/> /*/-->
 </body>
 </html>

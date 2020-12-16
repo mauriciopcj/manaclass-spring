@@ -11,14 +11,26 @@
 	<!--/*/ <div th:replace="~{fragments/fragments :: header('Página Home')}"></div> /*/-->
 
 	<div class="container">
-		<p class="alert alert-primary" th:text="${mensagem}" th:if="${mensagem != null}"></p>
+		<div th:if="${not #strings.isEmpty(mensagem)}" 
+			th:utext="${mensagem} + '<button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;><span aria-hidden=&quot;true&quot;>&times;</span></button>'"
+			th:class="${'alert-dismissible fade show alert alert-' + typeMessage}" role="alert">
+		</div>
 
-
-
-
-		<p> Usuário logado: <span th:text="${session.usuarioLogado.email}"></span>
+		<div class="card mx-auto" style="max-width: 500px;">
+			<div class="card-header">
+				Usuário Logado
+			</div>
+				
+			<div class="card-body">
+				<p><strong>Nome: </strong><span class="card-text" th:text="${session.usuarioLogado.nome}"></span></p>
+				<p><strong>E-mail: </strong><span class="card-text" th:text="${session.usuarioLogado.email}"></span></p>
+			</div>
+			
+			<div class="card-link p-2">
+				<a th:href="@{/aluno/insert-auto}" class="btn btn-dark btn-block">Povoar Tabela Alunos</a>			
+			</div>
+		</div>
 	</div>
-
 
 	<!--/*/ <th:block th:replace="~{fragments/footerinc :: footer}"/> /*/-->
 

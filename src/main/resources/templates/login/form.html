@@ -19,7 +19,10 @@
 			
 			<h5 class="text-center">ManaClass</h5>
 			
-			<p class="alert alert-primary" th:text="${mensagem}" th:if="${mensagem != null}"></p>
+			<div th:if="${not #strings.isEmpty(mensagem)}" 
+				th:utext="${mensagem} + '<button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;><span aria-hidden=&quot;true&quot;>&times;</span></button>'"
+				th:class="${'alert-dismissible fade show alert alert-' + typeMessage}" role="alert">
+			</div>
 			
 			<div class="form-group">
 			    <label for="email">Email</label>
